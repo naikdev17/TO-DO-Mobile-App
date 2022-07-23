@@ -1,4 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Homepage extends StatefulWidget {
   const Homepage({Key? key}) : super(key: key);
@@ -9,15 +13,17 @@ class Homepage extends StatefulWidget {
 
 class _HomepageState extends State<Homepage> {
   List todos = [];
+  bool loading = true;
   String input = "";
   final textEditingController = TextEditingController();
   String errtxt = "";
   bool vadlidate = true;
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    todos.add("item1");
+    loading = false;
   }
 
   @override
@@ -28,7 +34,11 @@ class _HomepageState extends State<Homepage> {
         ),
         body: Padding(
           padding: const EdgeInsets.only(top: 15),
-          child: ListView.builder(
+          child:
+              // ? Center(
+              //     child: CircularProgressIndicator(),
+              //   ):
+              ListView.builder(
             itemCount: todos.length,
             itemBuilder: (BuildContext context, int index) {
               return Dismissible(
@@ -44,7 +54,7 @@ class _HomepageState extends State<Homepage> {
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10)),
                   child: ListTile(
-                    title: Text(todos[index].toUpperCase()),
+                    title: Text(todos[index]),
                     trailing: IconButton(
                       icon: Icon(
                         Icons.delete,
@@ -63,7 +73,11 @@ class _HomepageState extends State<Homepage> {
           ),
         ),
         floatingActionButton: FloatingActionButton(
-          child: Icon(Icons.add),
+          backgroundColor: Colors.blue,
+          child: Icon(
+            Icons.add,
+            color: Colors.white,
+          ),
           onPressed: () {
             textEditingController.text = "";
             showDialog(
@@ -84,8 +98,12 @@ class _HomepageState extends State<Homepage> {
                       actions: [
                         TextButton(
                           onPressed: () {
-                            if (textEditingController.text.isEmpty) {
-                              setState(() {});
+                            if (textEditingController.text.length <= 5) {
+                              setState(() {
+                                Fluttertoast.showToast(
+                                    msg:
+                                        " TO-DO should have minimum 5 characters");
+                              });
                             } else {
                               setState(() {
                                 todos.add(input);
