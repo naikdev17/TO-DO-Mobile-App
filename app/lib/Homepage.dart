@@ -24,9 +24,6 @@ class _HomepageState extends State<Homepage> {
     // TODO: implement initState
     super.initState();
     loading = false;
-    todos.add("Analyze The survey results");
-    todos.add("Service a car");
-    todos.add("Publish App On Monday");
   }
 
   @override
